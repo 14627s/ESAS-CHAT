@@ -1,4 +1,3 @@
-# i will complet the code tomorrow i'm tires
 import base64
 import requests
 import time
@@ -27,30 +26,34 @@ def first():
      else:
          break
 
-def choices(): 
+def choices():
     print('[1] Create a room\n[2] Listen in a room\n[3] Start sending messages')
     while True:
-     userfirstchoice = int(input('[+] Your choice: '))
+     userfirstchoice = int(input('\n[+] Your choice: '))
      if userfirstchoice == 1:
          print('[+] Creating room...')
          roomcreationrequest=requests.post(url=f'{url}/createroom.php')
          roomcreationrequestresposnejsonformat=json.loads(roomcreationrequest.text)
-         if roomcreationrequestresposnejsonformat['success'] == 'true':
+         if 'error' in (roomcreationrequest.text):
+             print(f'[X] Error, Failed to create room')
+         else:
              print(f'[+] Room created successfully | ID = {roomcreationrequestresposnejsonformat['roomId']}')
 
-         if roomcreationrequestresposnejsonformat['success'] == 'false':
-             print(f'[X] Error, Failed to create room')
      if userfirstchoice == 2:
          roomlisteninguserchoice = input('[X] RoomId : ')
      if userfirstchoice ==3:
          while True:
              sendmessageroomidinput = input('[+] roomId : ')
              if sendmessageroomidinput is None:
-                 print('[X] Username cannot be empty')
+                 print('[X] RoomId cannot be empty')
              else:
+                 usernames = ['Robert', 'James', 'John', 'Michael', 'William', 'David', 'Richard', 'Charles', 'Joseph',
+                              'Thomas', 'Christopher', 'Daniel', 'Paul', 'Mark', 'Donald', 'George']
+                 username = random.choice(usernames)
                  while True:
-                     usernames = ['Robert','James','John','Michael','William','David','Richard','Charles','Joseph' ,'Thomas','Christopher','Daniel','Paul','Mark','Donald','George']
-                     username = random.choice(usernames)
-                     stmessage = input('[+] \n\n[+] Your message: ')
-                     stmessage = f'{username} : {stmessage}'
-                     stmessagerequest = requests.post(url = f'{url}/sendmessage.php',data=f'roomid={sendmessageroomidinput}&message={stmessage}')                                print(stmessagerequest.text)
+
+                     stmessage = input('\n[+] Your message: ')
+                     toencodedmessage=(f'{username}: {stmessage}').encode('utf-8')
+                     encode0dmessage=base64.b64encode(toencodedmessage)
+                     stmessagerequest = requests.post(url = f'{url}/sendmessage.php', data=f'roomid={sendmessageroomidinput}&message={encode0dmessage.decode('utf-8')}')
+choices()
