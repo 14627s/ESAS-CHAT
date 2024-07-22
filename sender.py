@@ -55,5 +55,9 @@ def choices():
                      stmessage = input('\n[+] Your message: ')
                      toencodedmessage=(f'{username}: {stmessage}').encode('utf-8')
                      encode0dmessage=base64.b64encode(toencodedmessage)
-                     stmessagerequest = requests.post(url = f'{url}/sendmessage.php', data=f'roomid={sendmessageroomidinput}&message={encode0dmessage.decode('utf-8')}')
+                     data = {
+                         'roomid': sendmessageroomidinput,
+                         'message': encode0dmessage.decode('utf-8')
+                     }
+                     stmessagerequest = requests.post(url = f'{url}/sendmessage.php', data=data)
 choices()
